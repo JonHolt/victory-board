@@ -1,14 +1,35 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
-    <title>Victory Board!</title>
+    <meta charset="UTF-8">
+    <title>Victory Board! - Standings</title>
+    <!-- Materialize Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
   </head>
   <body>
-
-    <h1 id="test"></h1>
-
-    <script src="https://www.gstatic.com/firebasejs/4.7.0/firebase.js"></script>
+    <div>
+      <ul id="slide-out" class="side-nav">
+        <li><div class="user-view">
+          <div class="background">
+            <img src="resources/game-background.jpg" width="300">
+          </div>
+          <a href="#!user"></a><img id="profile-pic" class="circle" src=""></a>
+          <a href="#!name"><span id="profile-name" class="white-text name"></span></a>
+        </div></li>
+        <li><a href="#!Standings">Standings</a></li>
+        <li><a href="./views/">Second Link</a></li>
+        <li><div class="divider"></div></li>
+        <li><a class="subheader">Subheader</a></li>
+        <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+      </ul>
+      <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+    </div>
+    <!-- Materialize Compiled and minified JavaScript -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    <!-- Firebase javascript -->
+    <script src="https://www.gstatic.com/firebasejs/4.8.0/firebase.js"></script>
+    <!-- Initialize Firebase -->
     <script>
       // Initialize Firebase
       var config = {
@@ -20,11 +41,12 @@
         messagingSenderId: "447001346789"
       };
       firebase.initializeApp(config);
-
-      // Test code
-      var test = document.getElementById('test');
-      var dbRef = firebase.database().ref().child('text');
-      dbRef.on('value', snap => test.innerText = snap.val());
+    </script>
+    <!-- Get user info -->
+    <script src="./scripts/init-user-data.js"></script>
+    <script type="text/javascript">
+      // Initialize collapse button
+      $(".button-collapse").sideNav();    
     </script>
   </body>
 </html>
