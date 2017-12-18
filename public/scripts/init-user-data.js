@@ -15,6 +15,20 @@ initApp = function() {
         
         document.getElementById('profile-pic').src = user.photoURL || '/resources/default.jpg';
         document.getElementById('profile-name').textContent = user.displayName;
+
+        var userRef = firebase.database().ref().child('Players').child(user.uid);
+        userRef.on('value', snap => {
+          if (!snap.val()) {
+            userRef.set({
+              gamesLost: 0,
+              gamesWon: 0,
+              name: userData.displayName,
+              photoURL: userData.photoURL,
+              points: 100
+            });
+          }
+        });
+
         // Tell page script to run
         var event = new Event('JdoneLoading');
         window.dispatchEvent(event);

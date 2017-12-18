@@ -26,8 +26,5 @@ fillData = function() {
   });
 };
 
-window.addEventListener('JdoneLoading', function(){
-  fillData();
-});
-
+window.addEventListener('JdoneLoading', fillData);
 window.addEventListener('hashchange', fillData);
