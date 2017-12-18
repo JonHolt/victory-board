@@ -23,7 +23,6 @@ initApp = function() {
       // User is signed out.
       document.getElementById('profile-pic').src = '/resources/default.jpg';
       document.getElementById('profile-name').textContent = 'Not Signed In';
-      delete userData;
       // Tell page script to run
       var event = new Event('JdoneLoading');
       window.dispatchEvent(event);

@@ -6,6 +6,7 @@ fillData = function() {
       nameElem = document.getElementById('name');
   var hash = window.location.hash.substr(1);
   var dbrefObj;
+  
   if (!hash) {
     if (!userData) { 
       return;
@@ -28,3 +29,5 @@ fillData = function() {
 window.addEventListener('JdoneLoading', function(){
   fillData();
 });
+
+window.addEventListener('hashchange', fillData);
