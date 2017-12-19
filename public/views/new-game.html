@@ -33,6 +33,9 @@
     </div>
     <div class="container" style="font-size: 3em;"> <!-- page body -->
       <h1 class="row">New Game</h1>
+      <div class="card grey darken-4 row">
+        <span class="col s12" id="points" style="font-size: .5em"></span>
+      </div>
       <div class="row">
         <div class="input-field col s12">
           <input placeholder="Title" id="title" type="text" class="validate">
@@ -66,6 +69,7 @@
       firebase.initializeApp(config);
     </script>
     <!-- Get user info -->
+    <script src="/scripts/polyfill.js"></script>
     <script src="/scripts/init-user-data.js"></script>
     <script src="/scripts/new-game.js"></script>
     <script type="text/javascript">
