@@ -11,9 +11,9 @@ fillData = function() {
     if (!userData) { 
       return;
     }
-    dbrefObj = firebase.database().ref().child('Players').child(userData.uid);
+    dbrefObj = firebase.database().ref().child('players').child(userData.uid);
   } else {
-    dbrefObj = firebase.database().ref().child('Players').child(hash);
+    dbrefObj = firebase.database().ref().child('players').child(hash);
   }
 
   dbrefObj.on('value', snap => {

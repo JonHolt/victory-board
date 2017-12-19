@@ -1,6 +1,6 @@
 fillData = function() {
   var listElem = document.getElementById('standings');
-  var dbrefObj = firebase.database().ref().child('Players');
+  var dbrefObj = firebase.database().ref().child('players');
   dbrefObj.on('value', snap => {
     var players = snap.val();
     var playerArray = [];
@@ -25,22 +25,22 @@ fillData = function() {
     
     listElem.innerHTML = '<li class="card grey darken-2 row">'
     + '<div class="white-text">'
-    + '<h3 class="col s2">Rank</h3>'
-    + '<h3 class="col s4">Name</h3>'
-    + '<h3 class="col s2">Win</h3>'
-    + '<h3 class="col s2">Loss</h3>'
-    + '<h3 class="col s2">Score</h3>'
+    + '<span class="col s2">Rank</span>'
+    + '<span class="col s4">Name</span>'
+    + '<span class="col s2">Win</span>'
+    + '<span class="col s2">Loss</span>'
+    + '<span class="col s2">Score</span>'
     + '</div>'
     + '</li>';
     var rank = 1;
     playerArray.forEach(player => {
       listElem.innerHTML += '<li class="card grey darken-2 row">'
       + '<a class="white-text" href="/views/profile.html#' + player.uid + '">'
-      + '<h3 class="col s2">#' + (rank++).toString() + '</h3>'
-      + '<h3 class="col s4">' + player.name + '</h3>'
-      + '<h3 class="col s2 center-align green-text">' + player.gamesWon + '</h3>'
-      + '<h3 class="col s2 center-align red-text">' + player.gamesLost + '</h3>'
-      + '<h3 class="col s2 center-align blue-text">' + player.points + '</h3>'
+      + '<span class="col s2">#' + (rank++).toString() + '</span>'
+      + '<span class="col s4">' + player.name + '</span>'
+      + '<span class="col s2 center-align green-text">' + player.gamesWon + '</span>'
+      + '<span class="col s2 center-align red-text">' + player.gamesLost + '</span>'
+      + '<span class="col s2 center-align blue-text">' + player.points + '</span>'
       + '</a>'
       + '</li>';
     });

@@ -2,6 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Victory Board! - New Game</title>
     <link rel="icon" href="/v-icon.ico">
     <!-- Materialize Compiled and minified CSS -->
@@ -11,7 +12,7 @@
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
   </head>
-  <body>
+  <body class="grey darken-4 white-text">
     <div> <!-- nav area -->
       <ul id="slide-out" class="side-nav">
         <li><div class="user-view">
@@ -21,16 +22,34 @@
           <a href="#"></a><img id="profile-pic" class="circle" src=""></a>
           <a href="#"><span id="profile-name" class="white-text name"></span></a>
         </div></li>
-        <li><h4><a href="/index.html">Standings</a></h4></li>
-        <li><h4><a href="./games.html">Games</a></h4></li>
-        <li><h4><a href="#">New Game</a></h4></li>
-        <li><h4><a href="./profile.html">Profile</a></h4></li>
-        <li><h4><a href="./login.html">Log In</a></h4></li>
-        <li><h4><a id="logout-btn" href="">Log Out</a></h4></li>
+        <li><a href="/index.html">Standings</a></li>
+        <li><a href="./games.html">Games</a></li>
+        <li><a href="#">New Game</a></li>
+        <li><a href="./profile.html">Profile</a></li>
+        <li><a href="./login.html">Log In</a></li>
+        <li><a id="logout-btn" href="">Log Out</a></li>
       </ul>
-      <a href="#" data-activates="slide-out" class="button-collapse show-on-large"><i class="large material-icons">menu</i></a>
+      <a href="#" data-activates="slide-out" class="button-collapse show-on-large"><i class="material-icons">menu</i></a>
     </div>
-
+    <div class="container" style="font-size: 3em;"> <!-- page body -->
+      <h1 class="row">New Game</h1>
+      <div class="row">
+        <div class="input-field col s12">
+          <input placeholder="Title" id="title" type="text" class="validate">
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <input placeholder="Time" id="time" type="text" class="validate">
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <input placeholder="Bet" id="bet" type="text">
+        </div>
+      </div>
+      <a class="waves-effect waves-light btn" id="submit">Submit</a>
+    </div>
     <!-- Firebase javascript -->
     <script src="https://www.gstatic.com/firebasejs/4.8.0/firebase.js"></script>
     <!-- Initialize Firebase -->
@@ -48,6 +67,7 @@
     </script>
     <!-- Get user info -->
     <script src="/scripts/init-user-data.js"></script>
+    <script src="/scripts/new-game.js"></script>
     <script type="text/javascript">
       // Initialize collapse button
       $(".button-collapse").sideNav();    
