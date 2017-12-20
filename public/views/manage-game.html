@@ -30,7 +30,15 @@
     </div>
 
     <div class="container"> <!-- page body -->
-      
+      <h1 id="title"></h1>
+      <div class="row">
+        <span class="col s6" id="time"></span>
+        <span class="col s6" id="status"></span>
+      </div>
+      <div class="row" id="button-area"></div>
+      <ul id="player-list">
+
+      </ul>
     </div>
 
     <!-- Materialize Compiled and minified JavaScript -->
@@ -54,6 +62,7 @@
     <!-- Get user info -->
     <script src="/scripts/polyfill.js"></script>
     <script src="/scripts/init-user-data.js"></script>
+    <script src="/scripts/manage-game.js"></script>
     <script type="text/javascript">
       // Initialize collapse button
       $(".button-collapse").sideNav();    

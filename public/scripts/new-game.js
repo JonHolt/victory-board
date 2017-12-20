@@ -25,11 +25,9 @@ submitNewGame = function() {
           }
         }
       });
+      firebase.database().ref().child('players').child(userData.uid).child('points').set(userData.points - bet);
+      window.location.href = '/views/games.html';
     });
-
-  firebase.database().ref().child('players').child(userData.uid).child('points').set(userData.points - bet);
-  
-  window.location.href = '/views/games.html';
 };
 
 fillData = function() {
