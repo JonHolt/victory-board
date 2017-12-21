@@ -11,7 +11,40 @@ playGame = (game, id) => () => {
 };
 
 endGame = (game, id) => () => {
-  console.log('end game: ', game.title, id);
+  var players = [];
+  var splitPool = 0;
+  var numWinners = 0;
+  Object.keys(game.players).forEach(key => {
+    var playerWon = document.getElementById(key).dataset.win === 'true'
+    players.push({
+      uid: key,
+      bet: game.players[key].bet,
+      won: playerWon
+    });
+    if (!playerWon) {
+      splitPool += game.players[key].bet;
+    }
+    else {
+      numWinners++;
+    }
+  });
+  var dbRef = firebase.database().ref().child('players');
+  dbRef.once('value', snap => {
+    var dbPlayers = snap.val();
+    players.forEach(player => {
+      var pointDiff;
+      if (player.won) {
+        // Return what they bet, plus half their bet, plus their cut of the loser's points.
+        pointDiff = Math.floor((player.bet / 2) + (splitPool / numWinners) + player.bet);
+      }
+      else {
+        pointDiff = 0;
+      }
+      dbRef.child(player.uid).child('points').set(dbPlayers[player.uid].points + pointDiff);
+    });
+    firebase.database().ref().child('games').child(id).child('status').set('closed');
+    window.location.href = '/views/games.html';
+  });
 };
 
 joinGame = (game, id) => () => {
@@ -19,6 +52,7 @@ joinGame = (game, id) => () => {
   if (!userData || Number.isNaN(bet)) {
     return;
   }
+  bet = Math.floor(bet);
   var user = firebase.database().ref().child('players').child(userData.uid);
   user.once('value', snap => {
     var points = snap.val().points;
@@ -31,7 +65,7 @@ joinGame = (game, id) => () => {
       user.child('points').set(points - bet);
       location.reload();
     } else {
-      alert('you cannot afford that bet!');
+      alert(`you only have ${points} points!`);
     }
   });
 };
@@ -78,7 +112,7 @@ fillData = function() {
     statusElem.textContent = game.status;
 
     
-    if (userData && userData.uid === game.owner) {
+    if (userData && userData.uid === game.owner && game.status !== 'closed') {
       // set up control area
       buttonAreaElem.innerHTML = `
         <a id="open" class="waves-effect waves-light btn col s4">Open</a>

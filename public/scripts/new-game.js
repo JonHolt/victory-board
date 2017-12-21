@@ -7,6 +7,8 @@ submitNewGame = function() {
     return;
   }
 
+  bet = Math.floor(bet);
+
   var games = firebase.database().ref().child('games');
   games.child('next-game-id').once('value')
     .then(snap => {
