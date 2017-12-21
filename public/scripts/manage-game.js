@@ -36,9 +36,11 @@ endGame = (game, id) => () => {
       if (player.won) {
         // Return what they bet, plus half their bet, plus their cut of the loser's points.
         pointDiff = Math.floor((player.bet / 2) + (splitPool / numWinners) + player.bet);
+        dbRef.child(player.uid).child('gamesWon').set(dbPlayers[player.uid].gamesWon + 1);
       }
       else {
         pointDiff = 0;
+        dbRef.child(player.uid).child('gamesLost').set(dbPlayers[player.uid].gamesLost + 1);
       }
       dbRef.child(player.uid).child('points').set(dbPlayers[player.uid].points + pointDiff);
     });
