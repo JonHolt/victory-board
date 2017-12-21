@@ -1,9 +1,3 @@
-openGame = (game, id) => () => {
-  if (game.status === 'playing') {
-    firebase.database().ref().child('games').child(id).child('status').set('open');
-  }
-};
-
 playGame = (game, id) => () => {
   if (game.status === 'open') {
     firebase.database().ref().child('games').child(id).child('status').set('playing');
@@ -15,7 +9,7 @@ endGame = (game, id) => () => {
   var splitPool = 0;
   var numWinners = 0;
   Object.keys(game.players).forEach(key => {
-    var playerWon = document.getElementById(key).dataset.win === 'true'
+    var playerWon = document.getElementById(key).dataset.win;
     players.push({
       uid: key,
       bet: game.players[key].bet,
@@ -33,19 +27,22 @@ endGame = (game, id) => () => {
     var dbPlayers = snap.val();
     players.forEach(player => {
       var pointDiff;
-      if (player.won) {
+      if (player.won === 'true') {
         // Return what they bet, plus half their bet, plus their cut of the loser's points.
         pointDiff = Math.floor((player.bet / 2) + (splitPool / numWinners) + player.bet);
         dbRef.child(player.uid).child('gamesWon').set(dbPlayers[player.uid].gamesWon + 1);
       }
-      else {
+      else if (player.won === 'false') {
         pointDiff = 0;
         dbRef.child(player.uid).child('gamesLost').set(dbPlayers[player.uid].gamesLost + 1);
+      }
+      else {
+        pointDiff = player.bet;
       }
       dbRef.child(player.uid).child('points').set(dbPlayers[player.uid].points + pointDiff);
     });
     firebase.database().ref().child('games').child(id).child('status').set('closed');
-    window.location.href = '/views/games.html';
+    window.location.href = '/index.html';
   });
 };
 
@@ -75,14 +72,18 @@ joinGame = (game, id) => () => {
 togglePlayerWinning = (e) => {
   var li = e.target.closest('li');
 
-  if (!li.dataset.win || li.dataset.win === 'false') {
-    li.dataset.win = true;
+  if (!li.dataset.win || li.dataset.win === '') {
+    li.dataset.win = 'true';
     li.setAttribute('class', 'card green darken-2 row');
-  } else {
-    li.dataset.win = false;
+  } 
+  else if (li.dataset.win === 'true'){
+    li.dataset.win = 'false';
     li.setAttribute('class', 'card red darken-2 row');
   }
-
+  else {
+    li.dataset.win = '';
+    li.setAttribute('class', 'card grey darken-2 row');
+  }
   e.preventDefault();
   return false;
 };
@@ -104,7 +105,9 @@ fillData = function() {
     var players = [];
     Object.keys(game.players).forEach(key => {
       players.push({
-        ...game.players[key],
+        bet: game.players[key].bet,
+        name: game.players[key].name,
+        photo: game.players[key].photo,
         uid: key
       });
     });
@@ -114,19 +117,22 @@ fillData = function() {
     statusElem.textContent = game.status;
 
     
-    if (userData && userData.uid === game.owner && game.status !== 'closed') {
+    if (userData && userData.uid === game.owner && game.status === 'open') {
       // set up control area
       buttonAreaElem.innerHTML = `
-        <a id="open" class="waves-effect waves-light btn col s4">Open</a>
-        <a id="play" class="waves-effect waves-light btn col s4">Play</a>
-        <a id="end" class="waves-effect waves-light btn col s4">End</a>`;
-      document.getElementById('open').onclick = openGame(game, gameID);
+        <div class="col s2"></div>
+        <a id="play" class="waves-effect waves-light btn col s8">Play</a>
+        <div class="col s2"></div>`;
       document.getElementById('play').onclick = playGame(game, gameID);
+    }
+    else if (userData && userData.uid === game.owner && game.status === 'playing') {
+      // set up control area
+      buttonAreaElem.innerHTML = `
+        <div class="col s2"></div>
+        <a id="end" class="waves-effect waves-light btn col s8">End</a>
+        <div class="col s2"></div>`;
       document.getElementById('end').onclick = endGame(game, gameID);
-    
-      if (game.status === 'playing') {
-        playerListElem.addEventListener('click', togglePlayerWinning);
-      } 
+      playerListElem.addEventListener('click', togglePlayerWinning);
     } 
     else if (!game.players[userData.uid] && game.status === 'open') {
       // set up control area
@@ -138,18 +144,34 @@ fillData = function() {
         <a id="join" class="waves-effect waves-light btn col s3">Join</a>`;
       document.getElementById('join').onclick = joinGame(game, gameID);
     }
+    else {
+      buttonAreaElem.innerHTML = '';
+    }
     // Set up player list
     playerListElem.innerHTML = '';
-    players.forEach(player => {
-      playerListElem.innerHTML += `
-        <li id="${player.uid}" class="card grey darken-2 row">
-          <div class="white-text valign-wrapper">
-            <img class="circle col s2" src="${player.photo}">
-            <span class="col s8">${player.name}</span>
-            <span class="col s2">${player.bet}</span>
-          </div>
-        </li>`;
-    });
+    if (game.status === 'open') {
+      players.forEach(player => {
+        playerListElem.innerHTML += `
+          <li id="${player.uid}" class="card grey darken-2 row">
+            <div class="white-text valign-wrapper">
+              <img class="circle col s2" src="${player.photo}">
+              <span class="col s8">${player.name}</span>
+            </div>
+          </li>`;
+      });
+    }
+    else {
+      players.forEach(player => {
+        playerListElem.innerHTML += `
+          <li id="${player.uid}" class="card grey darken-2 row">
+            <div class="white-text valign-wrapper">
+              <img class="circle col s2" src="${player.photo}">
+              <span class="col s8">${player.name}</span>
+              <span class="col s2">${player.bet}</span>
+            </div>
+          </li>`;
+      });
+    }
   });
 };
 

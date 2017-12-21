@@ -9,7 +9,11 @@ fillData = function() {
 				return;
 			}
 			gameArray.push({
-				...games[key],
+				owner: games[key].owner,
+				status: games[key].status,
+				time: games[key].time,
+				title: games[key].title,
+				players: games[key].players,
 				id: key
 			});
 		});

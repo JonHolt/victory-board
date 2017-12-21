@@ -6,7 +6,11 @@ fillData = function() {
     var playerArray = [];
     Object.keys(players).forEach(key => {
       playerArray.push({
-        ...players[key],
+        gamesLost: players[key].gamesLost,
+        gamesWon: players[key].gamesWon,
+        name: players[key].name,
+        photoURL: players[key].photoURL,
+        points: players[key].points,
         uid: key
       });
     });
