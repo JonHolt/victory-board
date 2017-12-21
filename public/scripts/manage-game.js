@@ -15,10 +15,10 @@ endGame = (game, id) => () => {
       bet: game.players[key].bet,
       won: playerWon
     });
-    if (!playerWon) {
+    if (playerWon === 'false') {
       splitPool += game.players[key].bet;
     }
-    else {
+    else if (playerWon === 'true') {
       numWinners++;
     }
   });
