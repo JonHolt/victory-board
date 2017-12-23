@@ -5,6 +5,9 @@ playGame = (game, id) => () => {
 };
 
 endGame = (game, id) => () => {
+  if (Object.keys(game.players).length < 2) {
+	  return;
+  }
   var players = [];
   var splitPool = 0;
   var numWinners = 0;
